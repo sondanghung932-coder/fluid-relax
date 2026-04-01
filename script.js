@@ -207,34 +207,34 @@ function supportRenderTextureFormat (gl, internalFormat, format, type) {
 
 function startGUI () {
     var gui = new dat.GUI({ width: 300 });
-    gui.add(config, 'DYE_RESOLUTION', { 'high': 1024, 'medium': 512, 'low': 256, 'very low': 128 }).name('quality').onFinishChange(initFramebuffers);
-    gui.add(config, 'SIM_RESOLUTION', { '32': 32, '64': 64, '128': 128, '256': 256 }).name('sim resolution').onFinishChange(initFramebuffers);
-    gui.add(config, 'DENSITY_DISSIPATION', 0, 4.0).name('density diffusion');
-    gui.add(config, 'VELOCITY_DISSIPATION', 0, 4.0).name('velocity diffusion');
-    gui.add(config, 'PRESSURE', 0.0, 1.0).name('pressure');
-    gui.add(config, 'CURL', 0, 50).name('vorticity').step(1);
-    gui.add(config, 'SPLAT_RADIUS', 0.01, 1.0).name('splat radius');
-    gui.add(config, 'SHADING').name('shading').onFinishChange(updateKeywords);
-    gui.add(config, 'COLORFUL').name('colorful');
-    gui.add(config, 'PAUSED').name('paused').listen();
+    gui.add(config, 'DYE_RESOLUTION', { '高清': 1024, '中等': 512, '低清': 256, '极低': 128 }).name('画质(Quality)').onFinishChange(initFramebuffers);
+    gui.add(config, 'SIM_RESOLUTION', { '32': 32, '64': 64, '128': 128, '256': 256 }).name('模拟精度').onFinishChange(initFramebuffers);
+    gui.add(config, 'DENSITY_DISSIPATION', 0, 4.0).name('流体持久度(Diffusion)');
+    gui.add(config, 'VELOCITY_DISSIPATION', 0, 4.0).name('速度持久度');
+    gui.add(config, 'PRESSURE', 0.0, 1.0).name('压力强度');
+    gui.add(config, 'CURL', 0, 50).name('旋涡强度(Vorticity)').step(1);
+    gui.add(config, 'SPLAT_RADIUS', 0.01, 1.0).name('喷射半径');
+    gui.add(config, 'SHADING').name('阴影特效').onFinishChange(updateKeywords);
+    gui.add(config, 'COLORFUL').name('五彩斑斓');
+    gui.add(config, 'PAUSED').name('暂停模拟').listen();
 
     gui.add({ fun: () => {
         splatStack.push(parseInt(Math.random() * 20) + 5);
-    } }, 'fun').name('Random splats');
+    } }, 'fun').name('随机喷射');
 
-    let bloomFolder = gui.addFolder('Bloom');
-    bloomFolder.add(config, 'BLOOM').name('enabled').onFinishChange(updateKeywords);
-    bloomFolder.add(config, 'BLOOM_INTENSITY', 0.1, 2.0).name('intensity');
-    bloomFolder.add(config, 'BLOOM_THRESHOLD', 0.0, 1.0).name('threshold');
+    let bloomFolder = gui.addFolder('辉光特效 (Bloom)');
+    bloomFolder.add(config, 'BLOOM').name('启用').onFinishChange(updateKeywords);
+    bloomFolder.add(config, 'BLOOM_INTENSITY', 0.1, 2.0).name('强度');
+    bloomFolder.add(config, 'BLOOM_THRESHOLD', 0.0, 1.0).name('阈值');
 
-    let sunraysFolder = gui.addFolder('Sunrays');
-    sunraysFolder.add(config, 'SUNRAYS').name('enabled').onFinishChange(updateKeywords);
-    sunraysFolder.add(config, 'SUNRAYS_WEIGHT', 0.3, 1.0).name('weight');
+    let sunraysFolder = gui.addFolder('光芒特效 (Sunrays)');
+    sunraysFolder.add(config, 'SUNRAYS').name('启用').onFinishChange(updateKeywords);
+    sunraysFolder.add(config, 'SUNRAYS_WEIGHT', 0.3, 1.0).name('权重');
 
-    let captureFolder = gui.addFolder('Capture');
-    captureFolder.addColor(config, 'BACK_COLOR').name('background color');
-    captureFolder.add(config, 'TRANSPARENT').name('transparent');
-    captureFolder.add({ fun: captureScreenshot }, 'fun').name('take screenshot');
+    let captureFolder = gui.addFolder('截图与背景');
+    captureFolder.addColor(config, 'BACK_COLOR').name('背景颜色');
+    captureFolder.add(config, 'TRANSPARENT').name('透明背景');
+    captureFolder.add({ fun: captureScreenshot }, 'fun').name('保存截图');
 
     let github = gui.add({ fun : () => {
         window.open('https://github.com/PavelDoGreat/WebGL-Fluid-Simulation');
@@ -269,7 +269,7 @@ function startGUI () {
     let app = gui.add({ fun : () => {
         ga('send', 'event', 'link button', 'app');
         window.open('http://onelink.to/5b58bn');
-    } }, 'fun').name('Check out mobile app');
+    } }, 'fun').name('移动端 App');
     app.__li.className = 'cr function appBigFont';
     app.__li.style.borderLeft = '3px solid #00FF7F';
     let appIcon = document.createElement('span');
